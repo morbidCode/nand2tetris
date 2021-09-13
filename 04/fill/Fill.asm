@@ -19,7 +19,7 @@ M=D
 D=A
 @columns
 M=D
-@keyboardState
+@screenState
 M=0
 @keyboardValue
 M=0
@@ -60,7 +60,7 @@ D=M
 D=D-M
 @INC
 D;JEQ
-@keyboardState
+@screenState
 D=M
 @screenPointer
 A=M
@@ -72,12 +72,12 @@ M=M+1
 @COLUMN_LOOP
 0;JMP
 (CLEAR_SCREEN)
-@keyboardState
+@screenState
 M=0
 @LOOP
 0;JMP
 (BLACK_SCREEN)
-@keyboardState
+@screenState
 M=-1
 @LOOP
 0;JMP
