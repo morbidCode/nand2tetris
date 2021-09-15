@@ -15,6 +15,5 @@ CHIP Bit {
 
     PARTS:
     Mux(a=currentState, b=in, sel=load, out=nextState);
-    DFF(in=nextState, out=currentState);
-    DFF(in=nextState, out=out);
+    DFF(in=nextState, out=currentState, out=out);
 }
