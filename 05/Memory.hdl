@@ -27,5 +27,22 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Not(in=address[14], out=isRamSelected);
+    And(a=load, b=isRamSelected, out=loadRam);
+    RAM16K(in=in, load=loadRam, address=address[0..13], out=ramOut);
+    Not(in=address[13], out=notBit13);
+    And(a=address[14], b=notBit13, out=isScreenSelected);
+    And(a=load, b=isScreenSelected, out=loadScreen);
+    Screen(in=in, load=loadScreen, address=address[0..12], out=screenOut);
+    Or8Way(in=address[0..7], out=orRightSide);
+    Or8Way(in[0..4]=address[8..12], out=orLeftSide);
+    Or(a=orLeftSide, b=orRightSide, out=orNonKeyboardBits);
+    Not(in=orNonKeyboardBits, out=keyboardAllZeros);
+    And(a=address[14], b=address[13], out=possibleKeyboardSelected);
+    And(a=possibleKeyboardSelected, b=keyboardAllZeros, out=isKeyboardSelected);
+    And(a=load, b=isKeyboardSelected, out=loadKeyboard);
+    Register(in=in, load=loadKeyboard, out=keyboardOut); // for non-interactive keyboard
+    Or(a=isRamSelected, b=isKeyboardSelected, out=muxBit0);
+    Or(a=isScreenSelected, b=isKeyboardSelected, out=muxBit1);
+    Mux4Way16(a=false, b=ramOut, c=screenOut, d=keyboardOut, sel[0]=muxBit0, sel[1]=muxBit1, out=out);
 }
