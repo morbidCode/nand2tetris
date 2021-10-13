@@ -7,8 +7,11 @@
 // except the keyboard tests are done in a non-interactive manner
 // (i.e. a manual key press is no longer required). Specifically, the script sets the keyboard
 // memory map (RAM[24576]) to the scan code specified in the original test script, then sets it to 0 afterwards.
+// Otherwise, all other tests are the same as in the original test script.
+// Warning: only use this script if you don't wish to or cannot use the hardware simulator GUI for some reason.
 // Warning: if you wish to use this script, make sure to use a normal register as your keyboard chip.
 // The builtin Keyboard chip does not have an input pin, so values cannot be manually fed into it.
+// The builtin Keyboard chip is just a register with a GUI sideeffect, so this should not be a major change
 
 load Memory.hdl,
 output-file MemoryAutomatic.out,
