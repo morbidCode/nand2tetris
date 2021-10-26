@@ -4,32 +4,40 @@
 
 (defn parse [] "fuck")
 
-(defn label?
-[str]
-(and (string/starts-with? str "(") (string/ends-with? str ")")))
-
-(defn persistent-string! [transient-chars] (apply str (persistent! transient-chars)))
+(defn persistent-string!
+[transient-chars]
+(apply str (persistent! transient-chars)))
 
 (defn comment?
 [chars]
 (and (= (first chars) \/) (= (fnext chars) \/)))
 
+(defn label?
+[line]
+(and (string/starts-with? line "(") (string/ends-with? line ")")))
+
 (defn a-instruction?
 [chars]
 (= (first chars) \@))
+
+(defn parse-label
+[label]
+(subs label 1 (count label)))
 
 (defn parse-a-instruction
 [instruction]
 {
 :type \a
-:value (apply str (next instruction))
+:value (subs instruction 1)
 })
 
 (defn parse-c-instruction
 [instruction]
 (defn split
 []
-(defn transient-empty? [transient] (= (count transient) 0))
+(defn transient-empty?
+[transient]
+(= (count transient) 0))
 (defn separator?
 [char]
 (or (= char \=) (= char \;)))
@@ -60,7 +68,9 @@ separator2 (get instruction-vec 3)]
 (defn ignore?
 [chars]
 (or (empty? chars) (comment? chars)))
-(defn space? [char] (= char \space))
+(defn space?
+[char]
+(= char \space))
 (def clean-lines (map #(loop [orig %
 result (transient [])]
 (if (ignore? orig)
