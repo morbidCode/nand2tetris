@@ -21,8 +21,11 @@
 (= (first chars) \@))
 
 (defn parse-label
-[label]
-(subs label 1 (count label)))
+[label line-number]
+{
+:name (subs label 1 (- (count label) 1))
+:instruction-number line-number
+})
 
 (defn parse-a-instruction
 [instruction]
@@ -81,4 +84,17 @@ result (transient [])]
 (with-open [rdr (io/reader file-name)]
 (into [] (comp clean-lines filter-lines) (line-seq  rdr))))
 
-)
+(let [lines (load-asm-file)]
+(loop [orig lines
+labels (transient [])
+instructions (transient [])
+instruction-number 1]
+(if (empty? orig)
+{
+:labels (persistent! labels)
+:instructions (persistent! instructions)
+}
+(let [[first-line & rest-lines] orig]
+(if (label? first-line)
+(recur rest-lines (conj! labels (parse-label first-line instruction-number)) instructions instruction-number)
+(recur rest-lines labels (conj! instructions ((if (a-instruction? first-line) parse-a-instruction parse-c-instruction) first-line)) (+ instruction-number 1))))))))
