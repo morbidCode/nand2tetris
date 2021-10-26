@@ -1,17 +1,9 @@
 (ns hack-assembler.parser
   (:require [clojure.string :as string])
-  (:require [clojure.java.io :as io]))
+  (:require [hack-assembler.utils :as utils]))
 
 (defn parse
-[file-name]
-(defn persistent-string!
-[transient-chars]
-(apply str (persistent! transient-chars)))
-
-(defn comment?
-[chars]
-(and (= (first chars) \/) (= (fnext chars) \/)))
-
+[lines]
 (defn label?
 [line]
 (and (string/starts-with? line "(") (string/ends-with? line ")")))
@@ -21,11 +13,8 @@
 (= (first chars) \@))
 
 (defn parse-label
-[label line-number]
-{
-:name (subs label 1 (- (count label) 1))
-:instruction-number line-number
-})
+[label]
+(subs label 1 (- (count label) 1)))
 
 (defn parse-a-instruction
 [instruction]
@@ -48,10 +37,10 @@
 result (transient [])
 fragment (transient [])]
 (if (empty? orig)
-(persistent! (if (transient-empty? fragment) result (conj! result (persistent-string! fragment))))
+(persistent! (if (transient-empty? fragment) result (conj! result (utils/persistent-string! fragment))))
 (let [[first-char & rest-chars] orig]
 (if (separator? first-char)
-(recur rest-chars (conj! (conj! result (persistent-string! fragment)) first-char) (transient []))
+(recur rest-chars (conj! (conj! result (utils/persistent-string! fragment)) first-char) (transient []))
 (recur rest-chars result (conj! fragment first-char)))))))
 (let [instruction-vec (split)
 fragment-count (count instruction-vec)
@@ -66,27 +55,8 @@ separator2 (get instruction-vec 3)]
 :else "NULL")
 }))
 
-(defn load-asm-file 
-[]
-(defn ignore?
-[chars]
-(or (empty? chars) (comment? chars)))
-(defn space?
-[char]
-(= char \space))
-(def clean-lines (map #(loop [orig %
-result (transient [])]
-(if (ignore? orig)
-(persistent-string! result)
-(let [[first-char & rest-chars] orig]
-(recur rest-chars (if (space? first-char) result (conj! result first-char))))))))
-(def filter-lines (remove #(ignore? %)))
-(with-open [rdr (io/reader file-name)]
-(into [] (comp clean-lines filter-lines) (line-seq  rdr))))
-
-(let [lines (load-asm-file)]
 (loop [orig lines
-labels (transient [])
+labels (transient {})
 instructions (transient [])
 instruction-number 1]
 (if (empty? orig)
@@ -96,5 +66,5 @@ instruction-number 1]
 }
 (let [[first-line & rest-lines] orig]
 (if (label? first-line)
-(recur rest-lines (conj! labels (parse-label first-line instruction-number)) instructions instruction-number)
-(recur rest-lines labels (conj! instructions ((if (a-instruction? first-line) parse-a-instruction parse-c-instruction) first-line)) (+ instruction-number 1))))))))
+(recur rest-lines (assoc! labels (parse-label first-line) instruction-number) instructions instruction-number)
+(recur rest-lines labels (conj! instructions ((if (a-instruction? first-line) parse-a-instruction parse-c-instruction) first-line)) (+ instruction-number 1)))))))

@@ -1,5 +1,5 @@
 (ns hack-assembler.core
-  (:require [hack-assembler.parser :refer [parse]])
+  (:require [hack-assembler.parser])
   (:gen-class))
 
 (defn -main
