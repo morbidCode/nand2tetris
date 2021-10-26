@@ -1,8 +1,12 @@
 (ns hack-assembler.core
-  (:require [hack-assembler.parser])
+  (:require [hack-assembler.io :as io])
+  (:require [hack-assembler.parser :as parser])
+
   (:gen-class))
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (doall (map println args)))
+  (let [lines (io/load-asm (first args))]
+(println lines)
+))
