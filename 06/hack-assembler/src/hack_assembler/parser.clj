@@ -48,11 +48,11 @@ separator1 (get instruction-vec 1)
 separator2 (get instruction-vec 3)]
 {
 :type \c
-:dest (if (= separator1 \=) (get instruction-vec 0) "NULL")
+:dest (if (= separator1 \=) (get instruction-vec 0) "null")
 :comp (if (= separator1 \=) (get instruction-vec 2) (get instruction-vec 0))
 :jump (cond (= separator1 \;) (get instruction-vec 2)
 (= separator2 \;) (get instruction-vec 4)
-:else "NULL")
+:else "null")
 }))
 
 (loop [orig lines
