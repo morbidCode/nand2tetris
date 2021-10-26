@@ -2,8 +2,8 @@
   (:require [clojure.string :as string])
   (:require [clojure.java.io :as io]))
 
-(defn parse [] "fuck")
-
+(defn parse
+[file-name]
 (defn persistent-string!
 [transient-chars]
 (apply str (persistent! transient-chars)))
@@ -64,7 +64,7 @@ separator2 (get instruction-vec 3)]
 }))
 
 (defn load-asm-file 
-[file-name]
+[]
 (defn ignore?
 [chars]
 (or (empty? chars) (comment? chars)))
@@ -80,3 +80,5 @@ result (transient [])]
 (def filter-lines (remove #(ignore? %)))
 (with-open [rdr (io/reader file-name)]
 (into [] (comp clean-lines filter-lines) (line-seq  rdr))))
+
+)
