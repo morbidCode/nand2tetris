@@ -1,8 +1,9 @@
 (ns hack-assembler.io
-  (:require [clojure.java.io :as file-io])
-  (:require [hack-assembler.utils :as utils]))
+  (:require [clojure.java.io :as file-io]
+  [clojure.string :as string]
+  [hack-assembler.utils :as utils]))
 
-(defn load-asm-file [file-name]
+(defn load [file-name]
 (defn comment? [string]
 (and (= (first string) \/) (= (fnext string) \/)))
 (defn ignore? [string]
@@ -18,3 +19,7 @@ result (transient [])]
 (def filter-lines (remove #(ignore? %)))
 (with-open [rdr (file-io/reader file-name)]
 (into [] (comp clean-lines filter-lines) (line-seq  rdr))))
+
+(defn write [file-name data]
+  (with-open [w (file-io/writer file-name )]
+    (.write w (string/join "\n" data))))

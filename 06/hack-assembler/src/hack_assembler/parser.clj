@@ -1,6 +1,6 @@
 (ns hack-assembler.parser
-  (:require [clojure.string :as string])
-  (:require [hack-assembler.utils :as utils]))
+  (:require [clojure.string :as string]
+  [hack-assembler.utils :as utils]))
 
 (defn parse [lines]
 (defn label? [line]

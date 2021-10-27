@@ -1,6 +1,6 @@
 (ns hack-assembler.converter
-  (:require [clojure.string :as string])
-  (:require [hack-assembler.symbol-table :as symbol-table :refer [make-table]]))
+  (:require [clojure.string :as string]
+[hack-assembler.symbol-table :as symbol-table :refer [make-table]]))
 
 (defn convert [instructions labels]
 (defn a-instruction?
