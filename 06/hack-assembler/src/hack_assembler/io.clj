@@ -5,14 +5,14 @@
 (defn load-asm
 [file-name]
 (defn comment?
-[chars]
-(and (= (first chars) \/) (= (fnext chars) \/)))
+[string]
+(and (= (first string) \/) (= (fnext string) \/)))
 (defn ignore?
-[chars]
-(or (empty? chars) (comment? chars)))
+[string]
+(or (empty? string) (comment? string)))
 (defn space?
-[char]
-(= char \space))
+[c]
+(= c \space))
 (def clean-lines (map #(loop [orig %
 result (transient [])]
 (if (ignore? orig)

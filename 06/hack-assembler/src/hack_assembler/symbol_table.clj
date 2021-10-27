@@ -1,7 +1,7 @@
 (ns hack-assembler.symbol-table)
 
 (defn make-table
-[variables]
+[labels]
 (let [predefined-symbols {
 "R0" 0
 "SP" 0
@@ -27,13 +27,11 @@
 "SCREEN" 16384
 "KBD" 24576
 }
-symbols (atom (into predefined-symbols variables))
+symbols (atom (into predefined-symbols labels))
 register-counter (atom 15)]
-(fn 
-[symbol] 
-(let [value (get @symbols symbol)]
+#(let [value (get @symbols %)]
 (if value
 value
 (do (swap! register-counter inc)
 (swap! symbols assoc symbol @register-counter)
-@register-counter))))))
+@register-counter)))))

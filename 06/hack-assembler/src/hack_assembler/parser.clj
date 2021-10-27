@@ -9,8 +9,8 @@
 (and (string/starts-with? line "(") (string/ends-with? line ")")))
 
 (defn a-instruction?
-[chars]
-(= (first chars) \@))
+[string]
+(= (first string) \@))
 
 (defn parse-label
 [label]
@@ -18,10 +18,11 @@
 
 (defn parse-a-instruction
 [instruction]
+(let [value (subs instruction 1)]
 {
 :type \a
-:value (subs instruction 1)
-})
+:value (if (utils/numeric? value) (Integer/parseInt value) value)
+}))
 
 (defn parse-c-instruction
 [instruction]
@@ -31,8 +32,8 @@
 [transient]
 (= (count transient) 0))
 (defn separator?
-[char]
-(or (= char \=) (= char \;)))
+[c]
+(or (= c \=) (= c \;)))
 (loop [orig instruction
 result (transient [])
 fragment (transient [])]
