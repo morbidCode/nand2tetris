@@ -1,6 +1,6 @@
 (ns hack-assembler.core
   (:require [hack-assembler.io :as io])
-  (:require [hack-assembler.parser :as parser])
+  (:require [hack-assembler.parser :as parser :refer [parse]])
 
   (:gen-class))
 
