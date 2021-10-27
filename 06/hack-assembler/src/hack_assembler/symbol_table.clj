@@ -32,5 +32,5 @@ register-counter (atom 15)]
 (if value
 value
 (do (swap! register-counter inc)
-(swap! symbols assoc symbol @register-counter)
+(swap! symbols assoc % @register-counter)
 @register-counter)))))
