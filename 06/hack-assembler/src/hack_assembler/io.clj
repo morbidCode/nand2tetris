@@ -3,7 +3,7 @@
   [clojure.string :as string]
   [hack-assembler.utils :as utils]))
 
-(defn load [file-name]
+(defn read-asm-file [file-name]
 (defn comment? [string]
 (and (= (first string) \/) (= (fnext string) \/)))
 (defn ignore? [string]
@@ -20,6 +20,6 @@ result (transient [])]
 (with-open [rdr (file-io/reader file-name)]
 (into [] (comp clean-lines filter-lines) (line-seq  rdr))))
 
-(defn write [file-name data]
+(defn write-hack-file [file-name data]
   (with-open [w (file-io/writer file-name )]
-    (.write w (string/join "\n" data))))
+    (.write w (str (string/join "\n" data) "\n"))))
