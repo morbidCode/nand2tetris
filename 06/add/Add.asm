@@ -8,6 +8,6 @@
 @2
 D=A
 @3
-D=D+A // add
+D=D+A
 @0
-M=D // asign to memory
+M=D
