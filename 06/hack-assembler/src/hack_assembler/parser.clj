@@ -59,7 +59,7 @@ separator2 (get instruction-vec 3)]
 (loop [orig lines
 labels (transient {})
 instructions (transient [])
-instruction-number 1]
+instruction-number 0]
 (if (empty? orig)
 {
 :labels (persistent! labels)
