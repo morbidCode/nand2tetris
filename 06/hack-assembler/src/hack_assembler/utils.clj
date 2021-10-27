@@ -1,9 +1,7 @@
 (ns hack-assembler.utils)
 
-(defn persistent-string!
-[transient-chars]
+(defn persistent-string! [transient-chars]
 (apply str (persistent! transient-chars)))
 
-(defn numeric?
-[string]
+(defn numeric? [string]
 (.matches string "\\d+"))

@@ -1,7 +1,6 @@
 (ns hack-assembler.symbol-table)
 
-(defn make-table
-[labels]
+(defn make-table [labels]
 (let [predefined-symbols {
 "R0" 0
 "SP" 0

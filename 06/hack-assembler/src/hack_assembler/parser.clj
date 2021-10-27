@@ -2,37 +2,24 @@
   (:require [clojure.string :as string])
   (:require [hack-assembler.utils :as utils]))
 
-(defn parse
-[lines]
-(defn label?
-[line]
+(defn parse [lines]
+(defn label? [line]
 (and (string/starts-with? line "(") (string/ends-with? line ")")))
-
-(defn a-instruction?
-[string]
+(defn a-instruction? [string]
 (= (first string) \@))
-
-(defn parse-label
-[label]
+(defn parse-label [label]
 (subs label 1 (- (count label) 1)))
-
-(defn parse-a-instruction
-[instruction]
+(defn parse-a-instruction [instruction]
 (let [value (subs instruction 1)]
 {
 :type \a
 :value (if (utils/numeric? value) (Integer/parseInt value) value)
 }))
-
-(defn parse-c-instruction
-[instruction]
-(defn split
-[]
-(defn transient-empty?
-[transient]
+(defn parse-c-instruction [instruction]
+(defn split []
+(defn transient-empty? [transient]
 (= (count transient) 0))
-(defn separator?
-[c]
+(defn separator? [c]
 (or (= c \=) (= c \;)))
 (loop [orig instruction
 result (transient [])
@@ -55,7 +42,6 @@ separator2 (get instruction-vec 3)]
 (= separator2 \;) (get instruction-vec 4)
 :else "null")
 }))
-
 (loop [orig lines
 labels (transient {})
 instructions (transient [])

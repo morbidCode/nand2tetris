@@ -2,16 +2,12 @@
   (:require [clojure.java.io :as file-io])
   (:require [hack-assembler.utils :as utils]))
 
-(defn load-asm
-[file-name]
-(defn comment?
-[string]
+(defn load-asm-file [file-name]
+(defn comment? [string]
 (and (= (first string) \/) (= (fnext string) \/)))
-(defn ignore?
-[string]
+(defn ignore? [string]
 (or (empty? string) (comment? string)))
-(defn space?
-[c]
+(defn space? [c]
 (= c \space))
 (def clean-lines (map #(loop [orig %
 result (transient [])]

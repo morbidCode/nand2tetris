@@ -2,8 +2,7 @@
   (:require [clojure.string :as string])
   (:require [hack-assembler.symbol-table :as symbol-table :refer [make-table]]))
 
-(defn convert
-[instructions labels]
+(defn convert [instructions labels]
 (defn a-instruction?
 [instruction]
 (= (:type instruction) \a))
@@ -60,21 +59,16 @@
 }
 }
 table (make-table labels)]
-(defn convert-a-instruction
-[instruction]
-(defn convert-to-binary
-[x]
+(defn convert-a-instruction [instruction]
+(defn convert-to-binary [x]
 (let [binary-string (Integer/toBinaryString x)
 bits-count 15
 padding (.repeat "0" (- bits-count (count binary-string)))]
 (str padding binary-string)))
 (let [value (:value instruction)]
 (str "0" (convert-to-binary (if (number? value) value (table value))))))
-
-(defn convert-c-instruction
-[instruction]
-(defn get-bits
-[mnemonic]
+(defn convert-c-instruction [instruction]
+(defn get-bits [mnemonic]
 (get-in c-instruction-bits [mnemonic (mnemonic instruction)]))
 (str "111" (get-bits :comp) (get-bits :dest) (get-bits :jump)))
 (map #((if (a-instruction? %) convert-a-instruction convert-c-instruction) %) instructions)))
